@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gimme that bike !</title>
+</head>
+<style>
+    html {
+        font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    }
+
+    .stations {
+        border: solid 1px #101010;
+        margin: 25px;
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .station-nom {
+        flex: 1;
+        align-self: center;
+        text-decoration: underline;
+        font-size: 16px;
+    }
+
+    .station {
+        margin: 10px;
+    }
+
+
+    .station-adresse {
+        font-size: 12px;
+    }
+
+    .station-unavailable {
+        color: orangered;
+    }
+
+    .station-available {
+        color: green;
+    }
+
+    .commune {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
+<body>
+{#if stations != null}
+
+<div class="commune">{commune}</div>
+<div class="stations">
+
+    {#for station in stations}
+    <div class="station">
+        <div class="station-nom">{station.nom ?: 'Nom inconnu'}</div>
+        <div class="station-adresse">{station.adresse ?: 'Adresse inconnue'}</div>
+        <div>
+            <div>Vélos dispos: <span
+                    class="{#if station.nbvelosdispo <= 2}station-unavailable{#else}station-available{/if}">{station.nbvelosdispo}</span>
+            </div>
+            <div>Places dispos: <span
+                    class="{#if station.nbplacesdispo <= 2}station-unavailable{#else}station-available{/if}">{station.nbplacesdispo}</span>
+            </div>
+        </div>
+        <p>
+            {#if station.type != null}
+            Avec TPE
+            {/if}
+            <br>
+        </p>
+    </div>
+    {/for}
+</div>
+{#if hasPrevious}
+<a href="{previousLink}">&lt;</a>
+{/if}
+{results}
+{#if hasNext}
+<a href="{nextLink}">&gt;</a>
+{/if}
+{/if}
+<form method="get" action="./search">
+    <label for="commune">Commune</label>
+    <select id="commune" name="commune">
+        <option value="lille">Lille</option>
+        <option value="la madeleine">La Madeleine</option>
+        <option value="villeneuve d'ascq">Villeneuve d'Ascq</option>
+        <option value="croix">Croix</option>
+        <option value="marcq en baroeul">Marcq en Baroeul</option>
+        <option value="roubaix">Roubaix</option>
+        <option value="tourcoing">Tourcoing</option>
+    </select>
+    <input type="hidden" name="s" value="10"/>
+    <input type="hidden" name="p" value="0"/>
+    <button type="submit">Rechercher les stations</button>
+</form>
+</body>
+</html>
